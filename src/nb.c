@@ -78,7 +78,7 @@ int main(int argc, char** argv){
 	if (argc == 2) {
 		// nb -h|-H|--help
 		if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "-H") == 0 || strcmp(argv[1], "--help") == 0) {
-			printf_s("Usage: nb [-h|-H|--help] [mode]\n");
+			printf_s("NameBuilder version 1. Usage: nb [-h|-H|--help] [mode]\n");
 			printf_s("Options:\n");
 			printf_s("%-30s%s\n","-h,-H,--help","show this help information.");
 			printf_s("%-30s%s\n", "<mode>", "name mode like X111 or X101.");
