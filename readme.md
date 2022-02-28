@@ -1,11 +1,10 @@
 # 构建
-
 ```
 mkdir build
 cd build
 cmake ..
 cmake --build .
-cmake --install
+cmake --install .
 ```
 
 # 使用
