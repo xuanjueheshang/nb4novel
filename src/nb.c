@@ -60,15 +60,11 @@ const char* typeinfo[] = {"角色","材料","地点","丹药","法宝","功法",
 const char*** data[] = { jsdata, cldata, dddata, dydata, fbdata, gfdata, lsdata };
 const size_t* lendata[] = { jslendata, cllendata, ddlendata, dylendata, fblendata, gflendata, lslendata };
 
-const char** randgen(const char** data, size_t dnum){
-	const char** result = (const char**) malloc(NAMENUM * sizeof(const char*));
-	if(result != NULL){
-		for(int i=0;i< NAMENUM;i++){
-			size_t index = rand() % dnum;
-			result[i] = data[index];
-		}
+void randgen(const char** part, const char** data, size_t dnum){
+	for(int i=0;i< NAMENUM;i++){
+		size_t index = rand() % dnum;
+		part[i] = data[index];
 	}
-	return result;
 }
 
 int main(int argc, char** argv){
@@ -126,31 +122,36 @@ int main(int argc, char** argv){
 	
 	// set seed
 	srand((unsigned int)time(0));
-	char (*name)[NAMENUM][NAMELEN] = (char(*)[NAMENUM][NAMELEN]) malloc(NAMELEN * NAMENUM);
+	
+	// init name
+	char (*name)[NAMELEN] = (char(*)[NAMELEN]) malloc(NAMELEN * NAMENUM);
 	if (name == NULL) {
 		return -1;
 	}
 	memset(name, '\0', NAMELEN * NAMENUM);
-	
+
 	// gen names
 	if (modeop[1] != '0') {
-		const char** head = randgen(data[nametype][0], lendata[nametype][0]);
+		const char** head = (const char**)malloc(NAMENUM * sizeof(const char*));
+		randgen(head,data[nametype][0], lendata[nametype][0]);
 		for (int i = 0; i < NAMENUM; i++) {
-			strcat((*name)[i], head[i]);
+			strcat(name[i], head[i]);
 		}
 		free((void*)head);
 	}
 	if (modeop[2] != '0') {
-		const char** body = randgen(data[nametype][1], lendata[nametype][1]);
+		const char** body = (const char**)malloc(NAMENUM * sizeof(const char*));
+		randgen(body,data[nametype][1], lendata[nametype][1]);
 		for (int i = 0; i < NAMENUM; i++) {
-			strcat((*name)[i], body[i]);
+			strcat(name[i], body[i]);
 		}
 		free((void*)body);
 	}
 	if (modeop[3] != '0') {
-		const char** tail = randgen(data[nametype][2], lendata[nametype][2]);
+		const char** tail = (const char**)malloc(NAMENUM * sizeof(const char*));
+		randgen(tail,data[nametype][2], lendata[nametype][2]);
 		for (int i = 0; i < NAMENUM; i++) {
-			strcat((*name)[i], tail[i]);
+			strcat(name[i], tail[i]);
 		}
 		free((void*)tail);
 	}
@@ -158,7 +159,7 @@ int main(int argc, char** argv){
 	// show names
 	printf_s("30个%s名字:\n", typeinfo[nametype]);
 	for (int i = 0; i < NAMENUM; i++) {
-		printf_s("%-21s", (*name)[i]);
+		printf_s("%-21s", name[i]);
 		if ((i+1) % 3 == 0) {
 			printf_s("\n");
 		}
