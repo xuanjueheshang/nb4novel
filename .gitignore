@@ -1,2 +1,3 @@
-/msvcbuild
-/install
+msvcbuild
+install
+.vscode
