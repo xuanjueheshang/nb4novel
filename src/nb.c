@@ -69,7 +69,7 @@ void randgen(const char** part, const char** data, size_t dnum)
 
 int main(int argc, char** argv)
 {
-    // default otion
+    // default option
     const char* modeop = "0111";
 
     // parse options
@@ -92,7 +92,7 @@ int main(int argc, char** argv)
             printf("and 1 means to generate this part.\n");
             return 0;
         }
-        // nb <mode>
+        // nb <mode>, set mode value
         modeop = argv[1];
         if (strlen(modeop) != 4 && strlen(modeop) != 1) {
             printf("Mode value error!\n");
@@ -104,11 +104,6 @@ int main(int argc, char** argv)
             tmp[0] = modeop[0];
             modeop = tmp;
         }
-        if (modeop[1] == '0' && modeop[2] == '0' && modeop[3] == '0') { //mode can not be 000
-            printf("Mode value error!\n");
-            printf("Try 'nb --help' for more information.");
-            return -1;
-        }
     }
     else if (argc != 1) {
         printf("code error\n");
@@ -116,8 +111,19 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    int nametype = modeop[0] - '0'; //name type from a char
+    int nametype = modeop[0] - '0'; //name type from a char, 0-6
     if (nametype >= (sizeof(typeinfo) / sizeof(const char*))) {
+        printf("Mode value error!\n");
+        printf("Try 'nb --help' for more information.");
+        return -1;
+    }
+    if (modeop[1] > '1' || modeop[2] > '1' || modeop[3] > '1' ||
+        modeop[1] < '0' || modeop[2] < '0' || modeop[3] < '0') { //mode can be 0 or 1
+        printf("Mode value error!\n");
+        printf("Try 'nb --help' for more information.");
+        return -1;
+    }
+    if (modeop[1] == '0' && modeop[2] == '0' && modeop[3] == '0') { //mode can not be 000
         printf("Mode value error!\n");
         printf("Try 'nb --help' for more information.");
         return -1;
