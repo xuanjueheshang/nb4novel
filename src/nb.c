@@ -70,7 +70,7 @@ void randgen(const char** part, const char** data, size_t dnum)
 int main(int argc, char** argv)
 {
     // default option
-    const char* modeop = "0111";
+    char modeop[] = { '0','1','1','1','\0' };
 
     // parse options
     if (argc == 2) {
@@ -93,16 +93,20 @@ int main(int argc, char** argv)
             return 0;
         }
         // nb <mode>, set mode value
-        modeop = argv[1];
-        if (strlen(modeop) != 4 && strlen(modeop) != 1) {
+        // modeop from argv[1];
+        if (strlen(argv[1]) != 4 && strlen(argv[1]) != 1) {
             printf("Mode value error!\n");
             printf("Try 'nb --help' for more information.");
             return -1;
         }
-        if (strlen(modeop) == 1) {
-            char tmp[5] = { '0', '1', '1', '1', '\0' };
-            tmp[0] = modeop[0];
-            modeop = tmp;
+        if (strlen(argv[1]) == 1) {
+            modeop[0] = argv[1][0];
+        }
+        if (strlen(argv[1]) == 4) {
+            modeop[0] = argv[1][0];
+            modeop[1] = argv[1][1];
+            modeop[2] = argv[1][2];
+            modeop[3] = argv[1][3];
         }
     }
     else if (argc != 1) {
@@ -146,7 +150,7 @@ int main(int argc, char** argv)
         for (int i = 0; i < NAMENUM; i++) {
             strcat(name[i], head[i]);
         }
-        free((void*)head);
+        free(head);
     }
     if (modeop[2] != '0') {
         const char** body = (const char**)malloc(NAMENUM * sizeof(const char*));
@@ -154,7 +158,7 @@ int main(int argc, char** argv)
         for (int i = 0; i < NAMENUM; i++) {
             strcat(name[i], body[i]);
         }
-        free((void*)body);
+        free(body);
     }
     if (modeop[3] != '0') {
         const char** tail = (const char**)malloc(NAMENUM * sizeof(const char*));
@@ -162,7 +166,7 @@ int main(int argc, char** argv)
         for (int i = 0; i < NAMENUM; i++) {
             strcat(name[i], tail[i]);
         }
-        free((void*)tail);
+        free(tail);
     }
 
     // show names
